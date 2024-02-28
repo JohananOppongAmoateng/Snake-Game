@@ -4,7 +4,7 @@ import random
 
 HEIGHT=600
 WIDTH=600
-DELAY=400
+
 
 offsets = {
     "up":(0,20),
@@ -15,8 +15,9 @@ offsets = {
 
 
 def game_reset():
-    global score,food_pos,snake,snake_direction
+    global score,food_pos,snake,snake_direction,delay
     score = 0
+    delay=400
     snake = [[0,0],[20,0],[40,0],[60,0]]
     snake_direction = "up"
     food_pos = get_random_food_pos()
@@ -44,14 +45,15 @@ def game_loop():
         
         screen.title(titlestring=f"Snake Game Score: {score}")
         screen.update()
-        turtle.ontimer(game_loop,DELAY)
+        turtle.ontimer(game_loop,delay)
 
 def food_collision():
-    global food_pos,score
+    global food_pos,score,delay
     if get_distance(snake[-1],food_pos) < 20:
         food_pos = get_random_food_pos()
         food.goto(food_pos)
         score += 1
+        delay=int(0.9 * delay)
         return True
     return False
 
