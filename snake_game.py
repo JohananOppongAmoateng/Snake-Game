@@ -14,6 +14,8 @@ offsets = {
     "right":(20,0),
 }
 
+score = 0
+
 def game_loop():
     stamper.clearstamps()
     new_head = snake[-1].copy()
@@ -31,15 +33,17 @@ def game_loop():
         for segment in snake:
             stamper.goto(segment[0],segment[1])
             stamper.stamp()
-
+        
+        screen.title(titlestring=f"Snake Game Score: {score}")
         screen.update()
         turtle.ontimer(game_loop,DELAY)
 
 def food_collision():
-    global food_pos
+    global food_pos,score
     if get_distance(snake[-1],food_pos) < 20:
         food_pos = get_random_food_pos()
         food.goto(food_pos)
+        score += 1
         return True
     return False
 
