@@ -4,7 +4,6 @@ import random
 
 HEIGHT=600
 WIDTH=600
-
 DELAY=400
 
 offsets = {
@@ -14,7 +13,16 @@ offsets = {
     "right":(20,0),
 }
 
-score = 0
+
+def game_reset():
+    global score,food_pos,snake,snake_direction
+    score = 0
+    snake = [[0,0],[20,0],[40,0],[60,0]]
+    snake_direction = "up"
+    food_pos = get_random_food_pos()
+    food.goto(food_pos)
+
+    game_loop()
 
 def game_loop():
     stamper.clearstamps()
@@ -23,7 +31,7 @@ def game_loop():
     new_head[1] += offsets[snake_direction][1]
 
     if new_head in snake or new_head[0] < -WIDTH /2 or new_head[0] > WIDTH / 2 or new_head[1] < -HEIGHT /2 or new_head[1] > HEIGHT / 2:
-        turtle.bye()
+        game_reset()
 
     else:
         snake.append(new_head)
@@ -59,8 +67,6 @@ def get_random_food_pos():
     food_position_y = random.randint(-250,250)
     return (food_position_x,food_position_y)
 
-    
-
 def go_up():
     global snake_direction
 
@@ -85,9 +91,6 @@ def go_left():
     if snake_direction != "right":
         snake_direction = "left"
 
-
-
-
 screen = Screen()
 screen.setup(width=WIDTH,height=HEIGHT)
 screen.bgcolor("cyan")
@@ -104,21 +107,10 @@ stamper = Turtle()
 stamper.shape("square")
 stamper.penup()
 
-snake = [[0,0],[20,0],[40,0],[60,0]]
-
-snake_direction = "up"
-
 food = Turtle()
 food.shape("circle")
 food.penup()
 
-food_pos = get_random_food_pos()
-food.goto(food_pos)
-
-for segment in snake:
-    stamper.goto(segment[0],segment[1])
-    stamper.stamp()
-
-game_loop()
+game_reset()
 
 turtle.done()
